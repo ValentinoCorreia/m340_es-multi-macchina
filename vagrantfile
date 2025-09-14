@@ -1,0 +1,78 @@
+Vagrant.configure("2") do |config|
+    
+    BASE_INT_NETWORK = "10.10.20"
+    BASE_HOST_ONLY_NETWORK = "192.168.56"
+    
+    BOX_IMAGE = "ubuntu/jammy64"
+    
+    PROXY_ENABLE = false
+    PROXY = "http://proxy.cpt.local:8080"
+
+    if PROXY_ENABLE
+        puts "running with proxy configuration (#{PROXY})..."
+        if Vagrant.has_plugin?("vagrant-proxyconf")
+            config.proxy.http = PROXY
+            config.proxy.https = PROXY
+        else
+            puts "vagrant-proxyconf:\nen: plugin not installed \nit: plugin non installato"
+            raise "vagrant-proxyconf plugin not installed"
+        end
+    end
+
+    #generic hardware config
+    config.vm.provider "virtualbox" do |vb|
+        vb.memory = 2048
+        vb.cpus = 2
+    end
+
+    config.vm.define "web" do |subconfig|
+        subconfig.vm.box = BOX_IMAGE
+
+        subconfig.vm.hostname = "web.m340"
+        
+        subconfig.vm.synced_folder "./web_app", "/var/www/web_app"
+
+        # file di configurazione hosts di apache
+        subconfig.vm.provision "file",
+            source: "config/web_app_site.conf",
+            destination: "/tmp/web_app_site.conf"
+
+        subconfig.vm.provision "shell", path: "scripts/web_provisioning.sh"
+        
+        subconfig.vm.provider "virtualbox" do |vb|
+            vb.name = "web.m340"
+        end
+
+        subconfig.vm.network "private_network",
+            ip: (BASE_INT_NETWORK + ".10"),
+            virtualbox__intnet: true
+        
+        subconfig.vm.network "private_network",
+            ip: (BASE_HOST_ONLY_NETWORK + ".10"),
+            virtualbox__intnet: false
+        
+    end
+    
+    config.vm.define "db" do |subconfig|
+        subconfig.vm.box = BOX_IMAGE
+
+        subconfig.vm.hostname = "db.m340"
+
+        # file di configurazione mariadb
+        subconfig.vm.provision "file",
+            source: "config/my.cnf",
+            destination: "/tmp/my.cnf"
+
+        subconfig.vm.provision "shell", path: "scripts/db_provisioning.bash"
+    
+        subconfig.vm.provider "virtualbox" do |vb|
+            vb.name = "db.m340"
+        end
+
+        subconfig.vm.network "private_network",
+            ip: (BASE_INT_NETWORK + ".11"),
+            virtualbox__intnet: true
+
+    end
+
+end
