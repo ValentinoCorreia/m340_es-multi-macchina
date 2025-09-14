@@ -8,7 +8,7 @@ Tutti i software, escluso Adminer, vengono scaricati dal repository ufficiale di
 - Mariadb
 - PHP
 - Apache2
-- Adminer
+- Adminer 5.4.0-mysql
 
 ## Eseguito con
 
