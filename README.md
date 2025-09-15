@@ -1,6 +1,6 @@
 # Esercizio Vagrant Multi-Host
 
-Esercizio scolastico che tramite vagrant mette in comunicazione una Virtual Machine con un servizio web (apache) con una con un servizio DBMS (mariadb).
+Esercizio scolastico che, tramite Vagrant, crea e mette in comunicazione due macchine virtuali, una con il servizio web (Apache) e l'altra con un servizio DBMS (Mariadb).
 
 ## Software utilizzati
 Tutti i software, escluso Adminer, vengono scaricati dal repository ufficiale di Ubuntu Jammy 64 bit:
