@@ -12,8 +12,8 @@ Tutti i software, escluso Adminer, vengono scaricati dal repository ufficiale di
 
 ## Eseguito con
 
-- Vagrant 2.4.9
-- VirtualBox 7.2.2 (Archlinux)
+- Vagrant 2.4.9 / 2.4.6
+- VirtualBox 7.2.2 (Archlinux) / 7.0.6 (Windows)
 
 ## Utente database per l'accesso remoto
 

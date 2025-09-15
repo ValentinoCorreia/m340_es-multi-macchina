@@ -3,7 +3,7 @@
 apt update
 apt install -y mariadb-server
 
-mv /tmp/my.cnf /etc/mysql/my.cnf
+mv /tmp/external_connections.cnf /etc/mysql/mariadb.conf.d/99-external_connections.cnf
 
 systemctl restart mariadb.service
 
